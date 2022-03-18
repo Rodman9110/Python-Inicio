@@ -1,0 +1,9 @@
+blog create
+<form method="POST">
+{% csrf_token %}
+{% comment %} SIEMPRE QUE CRES UN FORMULARIO HACER UN TOKEN CSRF {% endcomment %}
+title{{form.title}}
+<br>
+content{{form.content}}
+<button type="submit">Guardar</button>
+</form>
