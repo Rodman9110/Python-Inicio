@@ -1,13 +1,16 @@
 # from importlib.resources import contents
 # from multiprocessing import context
-from django.shortcuts import render,redirect,get_list_or_404
-from django.views.generic.base import View
+from calendar import c
+from multiprocessing import context
+from django.shortcuts import get_object_or_404, render,redirect,get_list_or_404
+from django.views.generic import View,UpdateView
 from .forms import PostCreateForm
 from .models import Post
 class BlogListView(View):
     def get(self , request ,*args, **kwargs):
+        posts = Post.objects.all()
         context={
-          
+            'posts':posts
         }
         return render(request,'blog_list.html',context)
 
@@ -21,15 +24,9 @@ class BlogCreateView(View):
     def post(self,request,*args,**kwargs):
         if request.method=="POST":
             form = PostCreateForm(request.POST)
-            # print("Post")
-            # print(form.is_valid())
             if form.is_valid():
                 title =  form.cleaned_data.get('title')
                 content = form.cleaned_data.get('content')
-                # print("-----------------------------------")
-                # print(title)
-                # print(content)
-                # print("-----------------------------------")
                 p, created = Post.objects.get_or_create(title=title,content=content)
                 p.save()
                 return redirect('blog:home')
@@ -38,3 +35,15 @@ class BlogCreateView(View):
 
         }
         return render(request,'blog_create.html',context)
+
+class BlogDetailView(View):
+    def get(self, request,pk,*args,**kwargs):
+        post = get_object_or_404(Post,pk = pk)
+        context={
+            'post':post
+        }
+        return render(request,'blog_detail.html',context)
+
+class BlogUpdateView(UpdateView):
+    model=Post
+    fields=['titel','content']
