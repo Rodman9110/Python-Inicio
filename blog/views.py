@@ -1,10 +1,8 @@
 # from importlib.resources import contents
 # from multiprocessing import context
-from calendar import c
-from multiprocessing import context
-from re import template
-from django.shortcuts import get_object_or_404, render,redirect,get_list_or_404
-from django.views.generic import View,UpdateView
+
+from django.shortcuts import get_object_or_404, render,redirect
+from django.views.generic import View,UpdateView,DeleteView
 from .forms import PostCreateForm
 from .models import Post
 from django.urls import reverse_lazy
@@ -54,3 +52,8 @@ class BlogUpdateView(UpdateView):
     def get_success_url(self):
         pk = self.kwargs['pk']
         return reverse_lazy('blog:detail',kwargs={'pk':pk})
+
+class BlogDeleteView(DeleteView):
+    model=Post
+    template_name="blog_delete.html"   
+    success_url=reverse_lazy('blog:home')
