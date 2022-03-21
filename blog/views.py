@@ -2,10 +2,12 @@
 # from multiprocessing import context
 from calendar import c
 from multiprocessing import context
+from re import template
 from django.shortcuts import get_object_or_404, render,redirect,get_list_or_404
 from django.views.generic import View,UpdateView
 from .forms import PostCreateForm
 from .models import Post
+from django.urls import reverse_lazy
 class BlogListView(View):
     def get(self , request ,*args, **kwargs):
         posts = Post.objects.all()
@@ -46,4 +48,9 @@ class BlogDetailView(View):
 
 class BlogUpdateView(UpdateView):
     model=Post
-    fields=['titel','content']
+    fields=['title','content']
+    template_name='blog_update.html'
+
+    def get_success_url(self):
+        pk = self.kwargs['pk']
+        return reverse_lazy('blog:detail',kwargs={'pk':pk})
