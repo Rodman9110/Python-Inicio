@@ -1,9 +1,25 @@
-blog create
-<form method="POST">
+
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>blog create</h1>
+
+<form method="POST" >
 {% csrf_token %}
 {% comment %} SIEMPRE QUE CRES UN FORMULARIO HACER UN TOKEN CSRF {% endcomment %}
-title{{form.title}}
+title
 <br>
-content{{form.content}}
-<button type="submit">Guardar</button>
+{{form.title}}
+<br>
+content
+<br>
+{{form.content}}
+<br>
+<button class="mx-2 my-2 bg-indigo-700 transition duration-150 ease-in-out hover:bg-indigo-600 rounded text-white px-6 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-offset-2  focus:ring-indigo-600" type="submit">Guardar</button>
 </form>
+
+
+{% endblock content %}
+
